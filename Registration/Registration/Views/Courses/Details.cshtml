@@ -1,0 +1,90 @@
+﻿@model Registration.Course
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.courseName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseDept)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseDept)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseCapacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseCapacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseProfessor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseProfessor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.startTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.startTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.endTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.endTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.currentEnrollment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.currentEnrollment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.courseCredits)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.courseCredits)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.courseID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
