@@ -11,7 +11,9 @@ namespace MVC.Chapter2.Controllers
         // GET: Home
         public ViewResult Index()
         {
-            return View();
+         int hour = DateTime.Now.Hour;
+         ViewBag.Greeting = hour < 12 ? "Good Morning" : "Good Afternoon";
+         return View();
         }
-    }
-}
+   }
+} 
