@@ -9,11 +9,19 @@ namespace PizzaStoreMVC.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
-            var pizzaModel = new PizzaOrderOptions();
+            var orderModel = new PizzaOrder();
 
-            return View(pizzaModel);
+            return View(orderModel);
+        }
+
+        [HttpPost]
+        public string Index(PizzaOrder order)
+        {
+         var sauce = order.Option.sauces.FirstOrDefault(s => s.Selected);
+         return sauce.Text;
         }
     }
 }
