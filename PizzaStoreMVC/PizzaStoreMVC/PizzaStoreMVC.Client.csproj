@@ -96,11 +96,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DomainModels\Address.cs" />
+    <Compile Include="DomainModels\Cheese.cs" />
+    <Compile Include="DomainModels\Crust.cs" />
     <Compile Include="DomainModels\Customer.cs" />
     <Compile Include="DomainModels\Email.cs" />
     <Compile Include="DomainModels\Name.cs" />
-    <Compile Include="DomainModels\Orders.cs" />
+    <Compile Include="DomainModels\Order.cs" />
     <Compile Include="DomainModels\Phone.cs" />
+    <Compile Include="DomainModels\Pizza.cs" />
+    <Compile Include="DomainModels\Sauce.cs" />
+    <Compile Include="DomainModels\Size.cs" />
+    <Compile Include="DomainModels\Store.cs" />
+    <Compile Include="DomainModels\Topping.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -112,6 +119,9 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -121,7 +131,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,22 @@
+﻿
+@model PizzaStoreMVC.ViewModels.PizzaOrderOptions
+
+@Html.DropDownListFor(m => m.sauces, Model.sauces)
+@Html.DropDownListFor(m => m.crust, Model.crust)
+
+@{ 
+   foreach (var item in Model.cheeses)
+   {
+      Html.CheckBox(item.Text);
+   }
+
+}
+
+@Html.DropDownListFor(m => m.sizes, Model.sizes)
+
+@{ 
+   foreach (var item in Model.toppings)
+   {
+      Html.CheckBox(item.Text);
+   }
+}
