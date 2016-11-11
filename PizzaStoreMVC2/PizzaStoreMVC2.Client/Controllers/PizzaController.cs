@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PizzaStoreMVC2.Client.ViewModels;
+using PizzaStoreMVC2.Client;
 
 namespace PizzaStoreMVC2.Client.Controllers
 {
@@ -29,8 +30,8 @@ namespace PizzaStoreMVC2.Client.Controllers
       public string Index(PizzaModel model)
 
       {
-
-         return string.Format("{0} {1} {2} {3} {4}", model.Crust,model.Size,model.Sauce,model.Cheeses,model.Toppings);
+        
+         return string.Format("{0} pizza with {1} crust and {2} sauce loaded with {3}  cheese and topped with {4}", model.Size, model.Crust, model.Sauce, ClientHelper.ListPrint(model.Cheeses), ClientHelper.ListPrint(model.Toppings));
 
       }
    }

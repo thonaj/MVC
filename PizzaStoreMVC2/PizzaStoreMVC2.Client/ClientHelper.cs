@@ -13,11 +13,11 @@ namespace PizzaStoreMVC2.Client
       {
          var sauces = new List<SelectListItem>()
          {
-              new SelectListItem() { Text = "Alfredo", Value = "0" },
+              new SelectListItem() { Text = "Alfredo", Value = "Alfredo" },
 
-              new SelectListItem() { Text = "Tomato", Value = "1", Selected = true },
+              new SelectListItem() { Text = "Tomato", Value = "Tomato", Selected = true },
 
-              new SelectListItem() { Text = "Marinara", Value = "2" }
+              new SelectListItem() { Text = "Marinara", Value = "Marinara" }
          };
          return sauces;
       }
@@ -26,11 +26,11 @@ namespace PizzaStoreMVC2.Client
       {
          var Crusts = new List<SelectListItem>()
          {
-              new SelectListItem() { Text = "Hand Tossed", Value = "0" },
+              new SelectListItem() { Text = "Hand Tossed", Value = "Hand Tossed" },
 
-              new SelectListItem() { Text = "Pan Style", Value = "1", Selected = true },
+              new SelectListItem() { Text = "Pan Style", Value = "Pan Style", Selected = true },
 
-              new SelectListItem() { Text = "Thin and Crispy", Value = "2" }
+              new SelectListItem() { Text = "Thin and Crispy", Value = "Thin and Crispy" }
          };
          return Crusts;
       }
@@ -39,11 +39,11 @@ namespace PizzaStoreMVC2.Client
       {
          var cheeses = new List<SelectListItem>()
          {
-              new SelectListItem() { Text = "Italian Blend", Value = "0" },
+              new SelectListItem() { Text = "Italian Blend", Value = "Italian Blend" },
 
-              new SelectListItem() { Text = "Mozzerella", Value = "1", Selected = true },
+              new SelectListItem() { Text = "Mozzerella", Value = "Mozzerella", Selected = true },
 
-              new SelectListItem() { Text = "Pepper Jack", Value = "2" }
+              new SelectListItem() { Text = "Pepper Jack", Value = "Pepper Jack" }
          };
          return cheeses;
       }
@@ -52,11 +52,11 @@ namespace PizzaStoreMVC2.Client
       {
          var sizes = new List<SelectListItem>()
          {
-              new SelectListItem() { Text = "Medium", Value = "0" },
+              new SelectListItem() { Text = "Medium", Value = "Medium" },
 
-              new SelectListItem() { Text = "Large", Value = "1", Selected = true },
+              new SelectListItem() { Text = "Large", Value = "Large", Selected = true },
 
-              new SelectListItem() { Text = "Small", Value = "2" }
+              new SelectListItem() { Text = "Small", Value = "Small" }
          };
          return sizes;
       }
@@ -65,13 +65,31 @@ namespace PizzaStoreMVC2.Client
       {
          var toppings = new List<SelectListItem>()
          {
-              new SelectListItem() { Text = "Mushroom", Value = "0" },
+              new SelectListItem() { Text = "Mushroom", Value = "Mushroom" },
 
-              new SelectListItem() { Text = "Pepperoni", Value = "1", Selected = true },
+              new SelectListItem() { Text = "Pepperoni", Value = "Pepperoni", Selected = true },
 
-              new SelectListItem() { Text = "Diced Tomato", Value = "2" }
+              new SelectListItem() { Text = "Diced Tomato", Value = "Diced Tomato" }
          };
          return toppings;
+      }
+      internal static string ListPrint(List<string> list)
+      {
+         string toReturn = "";
+         foreach (var item in list)
+         {
+            if(toReturn.Equals(""))
+            {
+               toReturn += item;
+            }
+            else
+            {
+               toReturn += "and" + item;
+            }
+           
+            
+         }
+         return toReturn;
       }
    }
 }
