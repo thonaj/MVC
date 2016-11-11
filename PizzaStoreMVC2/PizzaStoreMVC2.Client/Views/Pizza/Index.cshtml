@@ -38,11 +38,11 @@
 @using (Html.BeginForm("Index", "Pizza",FormMethod.Post))
 {
    <p>
-      @Html.DropDownListFor(m => m.FirstOrDefault().Sauce, Model.FirstOrDefault().SauceOptions, new { @class = "btn btn-default dropdown-toggle" })
-      @Html.DropDownListFor(m => m.FirstOrDefault().Crust, Model.FirstOrDefault().CrustOptions, new { @class = "btn btn-default dropdown-toggle" })
-      @Html.DropDownListFor(m => m.FirstOrDefault().Size, Model.FirstOrDefault().SizeOptions, new { @class = "btn btn-default dropdown-toggle" })
-      @Html.DropDownListFor(m => m.FirstOrDefault().Cheeses, Model.FirstOrDefault().CheeseOptions, new { @class = "btn btn-default dropdown-toggle" })
-      @Html.DropDownListFor(m => m.FirstOrDefault().Toppings, Model.FirstOrDefault().ToppingOptions, new { @class = "btn btn-default dropdown-toggle" })
+      @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Sauce, Model.FirstOrDefault().SauceOptions, new { @class = "btn btn-default dropdown-toggle" })
+      @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Crust, Model.FirstOrDefault().CrustOptions, new { @class = "btn btn-default dropdown-toggle" })
+      @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Size, Model.FirstOrDefault().SizeOptions, new { @class = "btn btn-default dropdown-toggle" })
+      @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Cheeses, Model.FirstOrDefault().CheeseOptions, new { @class = "btn btn-default dropdown-toggle" })
+      @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Toppings, Model.FirstOrDefault().ToppingOptions, new { @class = "btn btn-default dropdown-toggle" })
 
       <button type="submit" class="btn btn-primary glyphicon glyphicon-cutlery"> Submit</button></p>
 }

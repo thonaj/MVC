@@ -11,6 +11,16 @@ namespace PizzaStoreMVC2.Client.ViewModels
    {
       [Key]
       public int Id { get; set; }
-      public List<SelectListItem> Sauces { get; set; }
+      public string Sauce { get; set; }
+      public string Crust { get; set; }
+      public List<string> Cheeses { get; set; }
+      public List<string> Toppings { get; set; }
+      public string Size { get; set; }
+
+      public PizzaOptions()
+      {
+         Cheeses = new List<string>();
+         Toppings = new List<string>();
+      }
    }
 }

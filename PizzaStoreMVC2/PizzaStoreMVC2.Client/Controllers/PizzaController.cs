@@ -31,7 +31,7 @@ namespace PizzaStoreMVC2.Client.Controllers
 
       {
         
-         return string.Format("{0} pizza with {1} crust and {2} sauce loaded with {3}  cheese and topped with {4}", model.Size, model.Crust, model.Sauce, ClientHelper.ListPrint(model.Cheeses), ClientHelper.ListPrint(model.Toppings));
+         return string.Format("{0} pizza with {1} crust and {2} sauce loaded with {3}  cheese and topped with {4}", model.PizzaOptions.Size, model.PizzaOptions.Crust, model.PizzaOptions.Sauce, ClientHelper.ListPrint(model.PizzaOptions.Cheeses), ClientHelper.ListPrint(model.PizzaOptions.Toppings));
 
       }
    }

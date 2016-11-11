@@ -21,11 +21,7 @@ namespace PizzaStoreMVC2.Client.ViewModels
       public List<SelectListItem> SizeOptions { get; set; }
 
 
-      public string Sauce { get; set; }
-      public string Crust { get; set; }
-      public  List<string> Cheeses { get; set; }
-      public  List<string> Toppings { get; set; }
-      public string Size { get; set; }
+      public PizzaOptions PizzaOptions { get; set; }
 
 
       public PizzaModel()
