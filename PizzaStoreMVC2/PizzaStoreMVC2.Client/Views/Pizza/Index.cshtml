@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PizzaStoreMVC2.Client.ViewModels.PizzaModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Sauce)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model)
+{
+   foreach (var itm in item.Option)
+   {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => itm.Text)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = itm.Value }) |
+            @Html.ActionLink("Details", "Details", new { id = itm.Value }) |
+            @Html.ActionLink("Delete", "Delete", new { id = itm.Value })
+        </td>
+    </tr>
+   }}
+
+</table>*@
+
+@Html.DropDownListFor(m => m.FirstOrDefault().SauceOptions, Model.FirstOrDefault().SauceOptions, new {@class="btn btn-default dropdown-toggle" })
+@Html.DropDownListFor(m => m.FirstOrDefault().CrustOptions, Model.FirstOrDefault().CrustOptions, new { @class = "btn btn-default dropdown-toggle" })
+@Html.DropDownListFor(m => m.FirstOrDefault().SizeOptions, Model.FirstOrDefault().SizeOptions, new { @class = "btn btn-default dropdown-toggle" })
+@Html.DropDownListFor(m => m.FirstOrDefault().CheeseOptions, Model.FirstOrDefault().CheeseOptions, new { @class = "btn btn-default dropdown-toggle" })
+@Html.DropDownListFor(m => m.FirstOrDefault().ToppingOptions, Model.FirstOrDefault().ToppingOptions, new { @class = "btn btn-default dropdown-toggle" })
+
+@*@Html.DropDownList("sauce", Model.Option)*@
+
+
+
+<button type="submit" class="btn btn-primary glyphicon glyphicon-cutlery" > Submit</button>
