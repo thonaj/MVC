@@ -172,6 +172,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PizzaController.cs" />
+    <Compile Include="DomainModels\AddressDTO.cs" />
+    <Compile Include="DomainModels\PizzaCheeseDTO.cs" />
+    <Compile Include="DomainModels\PizzaToppingDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,21 +183,20 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\Address.cs" />
-    <Compile Include="ViewModels\Cheese.cs" />
-    <Compile Include="ViewModels\Crust.cs" />
-    <Compile Include="ViewModels\Customer.cs" />
-    <Compile Include="ViewModels\Email.cs" />
-    <Compile Include="ViewModels\Name.cs" />
-    <Compile Include="ViewModels\Order.cs" />
-    <Compile Include="ViewModels\Phone.cs" />
-    <Compile Include="ViewModels\Pizza.cs" />
+    <Compile Include="DomainModels\CheeseDTO.cs" />
+    <Compile Include="DomainModels\CrustDTO.cs" />
+    <Compile Include="DomainModels\CustomerDTO.cs" />
+    <Compile Include="DomainModels\EmailDTO.cs" />
+    <Compile Include="DomainModels\NameDTO.cs" />
+    <Compile Include="DomainModels\OrderDTO.cs" />
+    <Compile Include="DomainModels\PhoneDTO.cs" />
+    <Compile Include="DomainModels\PizzaDTO.cs" />
     <Compile Include="ViewModels\PizzaModel.cs" />
-    <Compile Include="ViewModels\PizzaOptions.cs" />
-    <Compile Include="ViewModels\Sauce.cs" />
-    <Compile Include="ViewModels\Size.cs" />
-    <Compile Include="ViewModels\Store.cs" />
-    <Compile Include="ViewModels\Topping.cs" />
+    <Compile Include="DomainModels\PizzaOptions.cs" />
+    <Compile Include="DomainModels\SauceDTO.cs" />
+    <Compile Include="DomainModels\SizeDTO.cs" />
+    <Compile Include="DomainModels\StoreDTO.cs" />
+    <Compile Include="DomainModels\ToppingDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -205,6 +207,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\dev-deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -217,14 +220,18 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -255,7 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DomainModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

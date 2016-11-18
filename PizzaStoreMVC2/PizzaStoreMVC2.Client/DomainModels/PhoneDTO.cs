@@ -4,12 +4,10 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 
-namespace PizzaStoreMVC2.Client.ViewModels
+namespace PizzaStoreMVC2.Client.DomainModels
 {
-   public class Phone
+   public class PhoneDTO
    {
-      [Key]
-      public int Id { get; set; }
       public string Number { get; set; }
    }
 }

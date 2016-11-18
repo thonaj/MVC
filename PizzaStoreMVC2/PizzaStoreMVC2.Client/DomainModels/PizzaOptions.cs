@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace PizzaStoreMVC2.Client.ViewModels
+namespace PizzaStoreMVC2.Client.DomainModels
 {
    public class PizzaOptions
    {
