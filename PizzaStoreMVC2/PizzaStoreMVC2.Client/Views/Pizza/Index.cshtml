@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PizzaStoreMVC2.Client.ViewModels.PizzaModel>
+﻿@model IEnumerable<PizzaStoreMVC2.Client.DomainModels.PizzaDTO>
 
 @{
     ViewBag.Title = "Index";
@@ -33,7 +33,7 @@
     </tr>
    }}
 
-</table>*@
+</table>
 
 @using (Html.BeginForm("Index", "Pizza",FormMethod.Post))
 {
@@ -45,7 +45,7 @@
       @Html.DropDownListFor(m => m.FirstOrDefault().PizzaOptions.Toppings, Model.FirstOrDefault().ToppingOptions, new { @class = "btn btn-default dropdown-toggle" })
 
       <button type="submit" class="btn btn-primary glyphicon glyphicon-cutlery"> Submit</button></p>
-}
+}*@
 
 
 
