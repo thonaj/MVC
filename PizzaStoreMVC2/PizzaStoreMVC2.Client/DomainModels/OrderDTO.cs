@@ -12,13 +12,14 @@ namespace PizzaStoreMVC2.Client.DomainModels
       public OrderDTO()
       {
          this.Pizzas = new HashSet<PizzaDTO>();
-         this.Name = this.ToString();
+         //this.Name = this.ToString();
       }
 
       public string Name { get; set; }
       public decimal Value { get; set; }
       public int StoreId { get; set; }
       public int CustomerId { get; set; }
+      public PizzaDTO currentPizza { get; set; }
 
       public virtual CustomerDTO Customer { get; set; }
       public virtual StoreDTO Store { get; set; }
