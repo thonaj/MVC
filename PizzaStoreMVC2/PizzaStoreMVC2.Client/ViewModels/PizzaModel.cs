@@ -16,8 +16,8 @@ namespace PizzaStoreMVC2.Client.DomainModels
 
       public List<SelectListItem> SauceOptions { get; set; }
       public List<SelectListItem> CrustOptions { get; set; }
-      public List<SelectListItem>  CheeseOptions { get; set; }
-      public List<SelectListItem> ToppingOptions { get; set; }
+      public List<CheeseDTO>  CheeseOptions { get; set; }
+      public List<ToppingDTO> ToppingOptions { get; set; }
       public List<SelectListItem> SizeOptions { get; set; }
 
 
@@ -27,11 +27,11 @@ namespace PizzaStoreMVC2.Client.DomainModels
       public PizzaModel()
       {
 
-         SauceOptions = ClientHelper.GetSauces();
-         CrustOptions = ClientHelper.GetCrusts();
-         CheeseOptions = ClientHelper.GetCheeses();
-         ToppingOptions = ClientHelper.GetToppings();
-         SizeOptions = ClientHelper.GetSizes();
+         //SauceOptions = ClientHelper.GetSauces();
+         //CrustOptions = ClientHelper.GetCrusts();
+         //CheeseOptions = ClientHelper.GetCheeses();
+         //ToppingOptions = ClientHelper.GetToppings();
+         //SizeOptions = ClientHelper.GetSizes();
 
       }
 
