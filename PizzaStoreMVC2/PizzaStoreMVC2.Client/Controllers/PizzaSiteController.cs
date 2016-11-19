@@ -43,7 +43,13 @@ namespace PizzaStoreMVC2.Client.Controllers
 
       {
          pizzaSiteModel.storeString = model.storeString;
-         //return string.Format("You picked {0}.", pizzaSiteModel.storeString);
+         StoreDTO store;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         store = getStoresAsync().Result.Where(s => s.LocationId==model.storeString).FirstOrDefault();
+         pizzaSiteModel.currentStore = store;
          TempData["model"] = pizzaSiteModel;
          return RedirectToAction("ChooseUser");
 
@@ -76,8 +82,14 @@ namespace PizzaStoreMVC2.Client.Controllers
 
       {
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         CustomerDTO customer;
          pizzaSiteModel.userString = model.userString;
-         //return string.Format("You picked {0}.", pizzaSiteModel.storeString);
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         customer = getCustomersAsync().Result.Where(s => s.Name.ToString() == model.userString).FirstOrDefault();
+         pizzaSiteModel.currentCustomer = customer;
          TempData["model"] = pizzaSiteModel;
          return RedirectToAction("Order");
 

@@ -3,8 +3,9 @@
 @{
     ViewBag.Title = "Order";
 }
-<h3>Your Current Store is: @Html.LabelFor(m => m.storeString, Model.storeString)</h3>
-<h3>The Current User Is: @Html.LabelFor(m => m.userString, Model.userString)</h3>
+@{ var address = Model.currentCustomer.Address.ToString();}
+<h3>Your Current Store is: @Html.LabelFor(m => m.storeString, Model.storeString)       Phone Number: @Html.LabelFor(m =>m.currentStore.Phone.Number, Model.currentStore.Phone.Number)</h3>
+<h3>The Current User Is: @Html.LabelFor(m => m.userString, Model.userString)           Your Address Is: @Html.LabelFor(m => @address)</h3>
 <h2>Lets Start Your Order</h2>
 
 @using (Html.BeginForm("Order", "PizzaSite", FormMethod.Post))
