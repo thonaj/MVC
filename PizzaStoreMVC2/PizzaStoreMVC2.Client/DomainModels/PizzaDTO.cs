@@ -28,5 +28,28 @@ namespace PizzaStoreMVC2.Client.DomainModels
       public virtual SizeDTO Size { get; set; }
       public List<ToppingDTO> toppings { get; set; }
       public List<CheeseDTO> cheeses { get; set; }
+      public decimal Value { get; set; }
+      public decimal calculateValue()
+      {
+         Value = 0.00M;
+         Value += Crust.Value;
+         Value += Sauce.Value;
+         Value += Size.Value;
+         if(toppings!=null)
+         {
+            foreach (var item in toppings)
+            {
+               Value += item.Value;
+            }
+         }
+         if(cheeses!=null)
+         {
+            foreach (var item in cheeses)
+            {
+               Value += item.Value;
+            }
+         }
+         return Value;
+      }
    }
 }

@@ -10,6 +10,7 @@ using PizzaStoreMVC2.Client.DomainModels;
 using System.Threading.Tasks;
 using PizzaStoreMVC2.Client.ViewModels;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace PizzaStoreMVC2.Client.Controllers
 {
@@ -85,6 +86,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       //Get: PizzaSite/Order
       public ActionResult Order()
       {
+
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
          client = new HttpClient();
          client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
@@ -121,21 +123,39 @@ namespace PizzaStoreMVC2.Client.Controllers
          client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
          client.MaxResponseContentBufferSize = 256000;
          client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-         
-        
-         pizzaSiteModel.currentOrder.currentPizza.Sauce = getSaucesAsync().Result.Where(m => m.Name==model.sauceString).FirstOrDefault();
-         pizzaSiteModel.currentOrder.currentPizza.Size = getSizesAsync().Result.Where(m => m.Name==model.sizeString).FirstOrDefault();
-         pizzaSiteModel.currentOrder.currentPizza.Crust = getCrustAsync().Result.Where(m => m.Name == model.crustString).FirstOrDefault();
-         foreach (var item in model.currentOrder.currentPizza.cheeses)
+         var pizza = new PizzaDTO();        
+         pizza.Sauce=getSaucesAsync().Result.Where(m => m.Name==model.sauceString).FirstOrDefault();
+         pizza.Size=getSizesAsync().Result.Where(m => m.Name==model.sizeString).FirstOrDefault();
+         pizza.Crust=getCrustAsync().Result.Where(m => m.Name == model.crustString).FirstOrDefault();
+         pizza.cheeses = new List<CheeseDTO>();
+         pizza.toppings = new List<ToppingDTO>();         
+         for (int x=0;  x< model.CheeseOptions.Count(); x++)
          {
-            pizzaSiteModel.currentOrder.currentPizza.cheeses.Add(item);
+            if(model.CheeseOptions[x].chosen)
+            {
+               var option = new CheeseDTO();
+               option.chosen = true;
+               option.Name = pizzaSiteModel.CheeseOptions[x].Name;
+               option.Value = pizzaSiteModel.CheeseOptions[x].Value;
+               pizza.cheeses.Add(option);
+            }            
          }
-         foreach (var item in model.currentOrder.currentPizza.toppings)
+         for (int x=0;x< model.ToppingOptions.Count();x++)
          {
-            pizzaSiteModel.currentOrder.currentPizza.toppings.Add(item);
+            if(model.ToppingOptions[x].chosen)
+            {
+               var option = new ToppingDTO();
+               option.chosen = true;
+               option.Name = pizzaSiteModel.ToppingOptions[x].Name;
+               option.Value = pizzaSiteModel.ToppingOptions[x].Value;              
+               pizza.toppings.Add(option);
+            }
          }
-         pizzaSiteModel.currentOrder.Pizzas.Add(pizzaSiteModel.currentOrder.currentPizza);
+         model.currentOrder.currentPizza = pizza;
+         pizzaSiteModel.currentOrder.Pizzas.Add(model.currentOrder.currentPizza);
+         pizzaSiteModel.currentOrder.Value = pizzaSiteModel.currentOrder.calculateValue();
          TempData["model"] = pizzaSiteModel;
+         
          return RedirectToAction("revieworder");
 
       }
@@ -144,7 +164,27 @@ namespace PizzaStoreMVC2.Client.Controllers
       public ActionResult ReviewOrder()
       {
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         ViewBag.model = pizzaSiteModel;
+         TempData["model"] = pizzaSiteModel;
          return View(pizzaSiteModel);
+      }
+      //Post: PizzaSite/ReviewOrder
+      [System.Web.Mvc.HttpPost]
+      [MultipleButton(Name = "action", Argument = "Add")]
+      public RedirectToRouteResult AddPizza(PizzaSiteModel model)
+      {
+         pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         TempData["model"] = pizzaSiteModel;
+         return RedirectToAction("Order");
+      }
+
+      [System.Web.Mvc.HttpPost]
+      [MultipleButton(Name = "action", Argument = "Buy")]
+      public RedirectToRouteResult CompleteOrder(PizzaSiteModel model)
+      {
+         pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         TempData["model"] = pizzaSiteModel;
+         return RedirectToAction("PurchaseComplete");
       }
 
 
@@ -344,7 +384,30 @@ namespace PizzaStoreMVC2.Client.Controllers
       //public void Delete(int id)
       //{
       //}
-
-
+     
    }
+   [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+   public class MultipleButtonAttribute : ActionNameSelectorAttribute
+   {
+      public string Name { get; set; }
+      public string Argument { get; set; }
+
+      public override bool IsValidName(ControllerContext controllerContext, string actionName, MethodInfo methodInfo)
+      {
+         var isValidName = false;
+         var keyValue = string.Format("{0}:{1}", Name, Argument);
+         var value = controllerContext.Controller.ValueProvider.GetValue(keyValue);
+
+         if (value != null)
+         {
+            controllerContext.Controller.ControllerContext.RouteData.Values[Name] = Argument;
+            isValidName = true;
+         }
+
+         return isValidName;
+      }
+
+      
+   }
+
 }

@@ -30,5 +30,17 @@ namespace PizzaStoreMVC2.Client.DomainModels
       {
          return string.Format("{0}_{1}_{2}", Name.ToString(), Value.ToString(), Pizzas.Count.ToString());
       }
+      public Decimal calculateValue()
+      {
+         Value = 0.00M;
+         if(Pizzas!=null)
+         {
+            foreach (var item in Pizzas)
+            {
+               Value += item.calculateValue();
+            }
+         }
+         return Value;
+      }
    }
 }
