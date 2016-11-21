@@ -8,7 +8,7 @@ namespace PizzaStoreMVC2.Client.DomainModels
 {
    public class OrderDTO
    {
-      [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+      //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
       public OrderDTO()
       {
          this.Pizzas = new HashSet<PizzaDTO>();

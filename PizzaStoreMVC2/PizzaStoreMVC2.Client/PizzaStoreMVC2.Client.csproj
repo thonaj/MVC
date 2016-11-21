@@ -278,6 +278,7 @@
     <Content Include="Views\PizzaSite\ChooseUser.cshtml" />
     <Content Include="Views\PizzaSite\Order.cshtml" />
     <Content Include="Views\PizzaSite\ReviewOrder.cshtml" />
+    <Content Include="Views\PizzaSite\PurchaseComplete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

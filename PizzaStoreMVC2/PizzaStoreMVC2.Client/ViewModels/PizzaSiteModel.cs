@@ -25,7 +25,7 @@ namespace PizzaStoreMVC2.Client.ViewModels
       public string crustString { get; set; }
       public string sizeString { get; set; }
       public string sauceString { get; set; }
-      
+      public List<OrderDTO> orderhistory { get; set; }
 
       public OrderDTO currentOrder { get; set; }
       public CustomerDTO currentCustomer { get; set; }

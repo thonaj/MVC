@@ -10,7 +10,7 @@ namespace PizzaStoreMVC2.Client.DomainModels
    public class PizzaOptions
    {
       [Key]
-      public int Id { get; set; }
+      //public int Id { get; set; }
       public string Sauce { get; set; }
       public string Crust { get; set; }
       public List<string> Cheeses { get; set; }

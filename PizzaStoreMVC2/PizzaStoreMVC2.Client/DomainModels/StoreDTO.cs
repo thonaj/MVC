@@ -14,5 +14,10 @@ namespace PizzaStoreMVC2.Client.DomainModels
       public virtual PhoneDTO Phone { get; set; }
       public int AddressId { get; set; }
       public int PhoneId { get; set; }
+      //public StoreDTO()
+      //{
+      //   this.Orders = new HashSet<OrderDTO>();
+      //}
+      //public int Id { get; set; }
    }
 }

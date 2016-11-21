@@ -18,5 +18,10 @@ namespace PizzaStoreMVC2.Client.DomainModels
       public virtual PhoneDTO Phone { get; set; }
       [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
       public virtual ICollection<OrderDTO> Orders { get; set; }
+      [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+      public CustomerDTO()
+      {
+         this.Orders = new HashSet<OrderDTO>();
+      }
    }
 }

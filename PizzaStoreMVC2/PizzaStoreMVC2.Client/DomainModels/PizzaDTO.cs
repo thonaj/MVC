@@ -51,5 +51,9 @@ namespace PizzaStoreMVC2.Client.DomainModels
          }
          return Value;
       }
+      //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+      //public virtual ICollection<PizzaCheeseDTO> PizzaCheese { get; set; }
+      //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+      //public virtual ICollection<PizzaToppingDTO> PizzaToppings { get; set; }
    }
 }

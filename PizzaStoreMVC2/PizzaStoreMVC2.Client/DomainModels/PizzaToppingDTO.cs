@@ -15,5 +15,8 @@ namespace PizzaStoreMVC2.Client.DomainModels
       {
          return string.Format("{0}_{1}", PizzaId, ToppingId);
       }
+      //public int Id { get; set; }
+
+      public virtual PizzaDTO Pizza { get; set; }
    }
 }

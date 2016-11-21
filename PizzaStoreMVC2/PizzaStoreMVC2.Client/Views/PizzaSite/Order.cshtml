@@ -4,8 +4,26 @@
     ViewBag.Title = "Order";
 }
 @{ var address = Model.currentCustomer.Address.ToString();}
-<h3>Your Current Store is: @Html.LabelFor(m => m.storeString, Model.storeString)       Phone Number: @Html.LabelFor(m =>m.currentStore.Phone.Number, Model.currentStore.Phone.Number)</h3>
-<h3>The Current User Is: @Html.LabelFor(m => m.userString, Model.userString)           Your Address Is: @Html.LabelFor(m => @address)</h3>
+<div class="container-fluid">
+   <div class="row h3" >
+      <div class="col-md-6">
+         Your Current Store is: @Html.LabelFor(m => m.storeString, Model.storeString)
+      </div>        
+      <div class="col-md-6">
+         Our Phone Number Is: @Html.LabelFor(m => m.currentStore.Phone.Number, Model.currentStore.Phone.Number)
+      </div >
+   </div >
+   <div class="row h3">
+      <div class="col-md-6">
+         The Current User Is: @Html.LabelFor(m => m.userString, Model.userString)
+      </div>
+      <div class="col-md-6">
+         Your Address Is: @Html.LabelFor(m => m.currentCustomer.Address, Model.currentCustomer.Address.Street) @Html.LabelFor(m => m.currentCustomer.Address, Model.currentCustomer.Address.City) @Html.LabelFor(m => m.currentCustomer.Address, Model.currentCustomer.Address.State) @Html.LabelFor(m => m.currentCustomer.Address, Model.currentCustomer.Address.Zip)
+      </div>
+   </div>   
+</div >
+
+
 <h2>Lets Start Your Order</h2>
 
 @using (Html.BeginForm("Order", "PizzaSite", FormMethod.Post))

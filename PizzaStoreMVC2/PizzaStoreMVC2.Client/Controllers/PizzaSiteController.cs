@@ -21,10 +21,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       // GET: PizzaSite
       public ActionResult Index()
       {
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          var storeResult = getStoresAsync();
          if (storeResult != null)
          {
@@ -44,10 +41,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       {
          pizzaSiteModel.storeString = model.storeString;
          StoreDTO store;
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          store = getStoresAsync().Result.Where(s => s.LocationId==model.storeString).FirstOrDefault();
          pizzaSiteModel.currentStore = store;
          TempData["model"] = pizzaSiteModel;
@@ -59,10 +53,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       public ActionResult ChooseUser()
       {
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          var userResult = getCustomersAsync();
          if (userResult != null)
          {
@@ -84,10 +75,7 @@ namespace PizzaStoreMVC2.Client.Controllers
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
          CustomerDTO customer;
          pizzaSiteModel.userString = model.userString;
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          customer = getCustomersAsync().Result.Where(s => s.Name.ToString() == model.userString).FirstOrDefault();
          pizzaSiteModel.currentCustomer = customer;
          TempData["model"] = pizzaSiteModel;
@@ -100,10 +88,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       {
 
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          var toppingresult = getToppingsAsync().Result;
          var sauceresult = getSaucesAsync();
          var crustresult = getCrustAsync();
@@ -131,10 +116,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       public RedirectToRouteResult Order(PizzaSiteModel model)
       {
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
-         client = new HttpClient();
-         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
-         client.MaxResponseContentBufferSize = 256000;
-         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         
          var pizza = new PizzaDTO();        
          pizza.Sauce=getSaucesAsync().Result.Where(m => m.Name==model.sauceString).FirstOrDefault();
          pizza.Size=getSizesAsync().Result.Where(m => m.Name==model.sizeString).FirstOrDefault();
@@ -163,9 +145,15 @@ namespace PizzaStoreMVC2.Client.Controllers
                pizza.toppings.Add(option);
             }
          }
+         pizza.Name= string.Format("{0}_{1}", pizzaSiteModel.currentCustomer.Name.ToString(), new Guid());
          model.currentOrder.currentPizza = pizza;
+         
+
+        
          pizzaSiteModel.currentOrder.Pizzas.Add(model.currentOrder.currentPizza);
          pizzaSiteModel.currentOrder.Value = pizzaSiteModel.currentOrder.calculateValue();
+         pizzaSiteModel.currentOrder.Customer = pizzaSiteModel.currentCustomer;
+         pizzaSiteModel.currentOrder.Store = pizzaSiteModel.currentStore;
          TempData["model"] = pizzaSiteModel;
          
          return RedirectToAction("revieworder");
@@ -195,17 +183,49 @@ namespace PizzaStoreMVC2.Client.Controllers
       public RedirectToRouteResult CompleteOrder(PizzaSiteModel model)
       {
          pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         pizzaSiteModel.currentOrder.Name = string.Format("{0}_{1}_{2}", pizzaSiteModel.currentStore.LocationId, pizzaSiteModel.currentCustomer.Name.ToString(), pizzaSiteModel.currentOrder.Pizzas.Count.ToString());
+         foreach (var item in pizzaSiteModel.currentOrder.Pizzas)
+         {
+            item.Order = new OrderDTO();
+            item.Order.Name = pizzaSiteModel.currentOrder.Name;
+            item.Order.Store = pizzaSiteModel.currentStore;
+            item.Order.Customer = pizzaSiteModel.currentCustomer;
+            
+            
+         }
          TempData["model"] = pizzaSiteModel;
          return RedirectToAction("PurchaseComplete");
+      }
+
+      //Get: PizzaSite/PurchaseComplete
+      public ActionResult PurchaseComplete()
+      {
+         pizzaSiteModel = TempData["model"] as PizzaSiteModel;
+         var result = insertOrderAsync(pizzaSiteModel.currentOrder).Result;
+         foreach (var item in pizzaSiteModel.currentOrder.Pizzas)
+         {
+            insertPizzaAsync(item);
+            foreach (var item2 in item.cheeses)
+            {
+               var pizzacheese = new PizzaCheeseDTO();
+               pizzacheese.Cheese = item2;
+               pizzacheese.Pizza = item;
+               
+               insertPizzaCheeseAsync(pizzacheese);
+            }
+         }
+         pizzaSiteModel.orderhistory = getOrdersAsync().Result;
+         TempData["model"] = pizzaSiteModel;
+         //return View(pizzaSiteModel);
+
+         return View(pizzaSiteModel);
       }
 
 
 
 
 
-
-
-
+      //make list functions***************************************************************************************************
       public List<SelectListItem> makeStoreList(Task<List<StoreDTO>> result)
       {
          var list = new List<SelectListItem>();
@@ -232,30 +252,7 @@ namespace PizzaStoreMVC2.Client.Controllers
          return list;
       }
 
-      public async Task<List<StoreDTO>> getStoresAsync()
-      {
-         List<StoreDTO> list = null;
-         HttpResponseMessage response = client.GetAsync("store").Result;
-         if (response.IsSuccessStatusCode)
-         {
-            var data = await response.Content.ReadAsStringAsync();
-            var product = JsonConvert.DeserializeObject<List<StoreDTO>>(data);
-            list = product;
-         }
-         return list;
-      }
-      public async Task<List<CustomerDTO>> getCustomersAsync()
-      {
-         List<CustomerDTO> list = null;
-         HttpResponseMessage response = client.GetAsync("customer").Result;
-         if (response.IsSuccessStatusCode)
-         {
-            var data = await response.Content.ReadAsStringAsync();
-            var product = JsonConvert.DeserializeObject<List<CustomerDTO>>(data);
-            list = product;
-         }
-         return list;
-      }
+     
 
       public List<SelectListItem> makeSauceList(Task<List<SauceDTO>> result)
       {
@@ -293,9 +290,47 @@ namespace PizzaStoreMVC2.Client.Controllers
          }
          return list;
       }
+
+      //async get functions*****************************************************************************
+      public async Task<List<StoreDTO>> getStoresAsync()
+      {
+         List<StoreDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         HttpResponseMessage response = client.GetAsync("store").Result;
+         if (response.IsSuccessStatusCode)
+         {
+            var data = await response.Content.ReadAsStringAsync();
+            var product = JsonConvert.DeserializeObject<List<StoreDTO>>(data);
+            list = product;
+         }
+         return list;
+      }
+      public async Task<List<CustomerDTO>> getCustomersAsync()
+      {
+         List<CustomerDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         HttpResponseMessage response = client.GetAsync("customer").Result;
+         if (response.IsSuccessStatusCode)
+         {
+            var data = await response.Content.ReadAsStringAsync();
+            var product = JsonConvert.DeserializeObject<List<CustomerDTO>>(data);
+            list = product;
+         }
+         return list;
+      }
       public async Task<List<ToppingDTO>> getToppingsAsync()
       {
          List<ToppingDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
          HttpResponseMessage response = client.GetAsync("topping").Result;
          if (response.IsSuccessStatusCode)
          {
@@ -308,6 +343,10 @@ namespace PizzaStoreMVC2.Client.Controllers
       public async Task<List<CrustDTO>> getCrustAsync()
       {
          List<CrustDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
          HttpResponseMessage response = client.GetAsync("crust").Result;
          if (response.IsSuccessStatusCode)
          {
@@ -320,6 +359,10 @@ namespace PizzaStoreMVC2.Client.Controllers
       public async Task<List<SizeDTO>> getSizesAsync()
       {
          List<SizeDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
          HttpResponseMessage response = client.GetAsync("size").Result;
          if (response.IsSuccessStatusCode)
          {
@@ -332,6 +375,10 @@ namespace PizzaStoreMVC2.Client.Controllers
       public async Task<List<SauceDTO>> getSaucesAsync()
       {
          List<SauceDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
          HttpResponseMessage response = client.GetAsync("sauce").Result;
          if (response.IsSuccessStatusCode)
          {
@@ -344,6 +391,10 @@ namespace PizzaStoreMVC2.Client.Controllers
       public async Task<List<CheeseDTO>> getCheesesAsync()
       {
          List<CheeseDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
          HttpResponseMessage response = client.GetAsync("cheese").Result;
          if (response.IsSuccessStatusCode)
          {
@@ -353,6 +404,81 @@ namespace PizzaStoreMVC2.Client.Controllers
          }
          return list;
       }
+
+      public async Task<List<OrderDTO>> getOrdersAsync()
+      {
+         List<OrderDTO> list = null;
+         client = new HttpClient();
+         client.BaseAddress = new Uri("http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.MaxResponseContentBufferSize = 256000;
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         HttpResponseMessage response = client.GetAsync("order").Result;
+         if (response.IsSuccessStatusCode)
+         {
+            var data = await response.Content.ReadAsStringAsync();
+            var product = JsonConvert.DeserializeObject<List<OrderDTO>>(data);
+            list = product;
+         }
+         return list;
+      }
+
+
+
+
+
+      //async insert functions*******************************************************************************
+      public async Task<HttpResponseMessage> insertOrderAsync([Bind(Include ="Name, Value, Customer, Store")]OrderDTO order)
+      {
+         client = new HttpClient();
+         client.BaseAddress = new Uri(@"http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         HttpResponseMessage response = await client.PostAsJsonAsync("order", order).ConfigureAwait(continueOnCapturedContext: false);
+         //response.EnsureSuccessStatusCode();
+
+
+         return response;
+      }
+      public async Task<HttpResponseMessage> insertPhoneAsync([Bind(Include = "Number")]PhoneDTO phone )
+      {
+         client = new HttpClient();
+         client.BaseAddress = new Uri(@"http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         var response = (await client.PostAsJsonAsync("phone", phone ).ConfigureAwait(continueOnCapturedContext: false));
+         return response;
+      }
+      public async Task<HttpResponseMessage> insertCustomerAsync([Bind(Include = "Address, Name, Email, Phone")]CustomerDTO customer)
+      {
+         client = new HttpClient();
+         client.BaseAddress = new Uri(@"http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         var response = (await client.PostAsJsonAsync("customer", customer).ConfigureAwait(continueOnCapturedContext: false));
+         return response;
+      }
+
+      public async Task<HttpResponseMessage> insertPizzaAsync([Bind(Include = "Name, Crust, Order, Sauce, Size, toppings, cheeses, Value")]PizzaDTO pizza)
+      {
+         client = new HttpClient();
+         client.BaseAddress = new Uri(@"http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         var response = (await client.PostAsJsonAsync("pizza", pizza).ConfigureAwait(continueOnCapturedContext: false));
+         return response;
+      }
+
+      public async Task<HttpResponseMessage> insertPizzaCheeseAsync([Bind(Include = "Cheese, Pizza")]PizzaCheeseDTO pizzacheese)
+      {
+         client = new HttpClient();
+         client.BaseAddress = new Uri(@"http://ec2-52-23-205-25.compute-1.amazonaws.com/pizzastoreapi/api/");
+         client.DefaultRequestHeaders.Accept.Clear();
+         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         var response = (await client.PostAsJsonAsync("pizzacheese", pizzacheese).ConfigureAwait(continueOnCapturedContext: false));
+         return response;
+      }
+
+
 
 
 
@@ -396,7 +522,7 @@ namespace PizzaStoreMVC2.Client.Controllers
       //public void Delete(int id)
       //{
       //}
-     
+
    }
    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
    public class MultipleButtonAttribute : ActionNameSelectorAttribute
